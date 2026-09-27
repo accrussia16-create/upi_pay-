@@ -1,0 +1,1002 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>UPI-Pay — Exchange Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+        <div class="brand">
+            <div class="brand-icon">↗</div>
+
+            <div>
+                <div class="brand-name">UPI-Pay</div>
+                <div class="brand-subtitle">Quick Exchange</div>
+            </div>
+        </div>
+
+        <nav class="nav">
+
+            <button class="nav-item active" data-section="exchange">
+                Exchange
+            </button>
+
+            <button class="nav-item" data-section="wallet">
+                Wallet
+            </button>
+
+            <button class="nav-item" data-section="orders">
+                Orders
+            </button>
+
+        </nav>
+
+        <div class="account">
+
+            <div class="online-dot"></div>
+
+            <div class="account-avatar">
+                U
+            </div>
+
+            <div class="account-info">
+                <strong>Demo User</strong>
+                <span>Personal Account</span>
+            </div>
+
+        </div>
+
+        <button class="menu-button" id="menuButton">
+            ☰
+        </button>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="status-badge">
+                <span></span>
+                SYSTEM ONLINE
+            </div>
+
+            <h1>
+                Move money.
+                <br>
+                <span>Your way.</span>
+            </h1>
+
+            <p>
+                Exchange currencies through a simple,
+                fast and modern payment experience.
+            </p>
+
+            <div class="hero-pills">
+
+                <div class="hero-pill">
+                    ⚡ Fast processing
+                </div>
+
+                <div class="hero-pill">
+                    🔒 Secure interface
+                </div>
+
+                <div class="hero-pill">
+                    🌎 Multiple methods
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Currency Visual -->
+
+        <div class="currency-visual">
+
+            <div class="orbit orbit-one"></div>
+            <div class="orbit orbit-two"></div>
+
+            <div class="currency-core">
+                <span>₨</span>
+            </div>
+
+            <div class="floating-currency currency-usd">
+                $
+            </div>
+
+            <div class="floating-currency currency-inr">
+                ₹
+            </div>
+
+            <div class="floating-currency currency-usdt">
+                ₮
+            </div>
+
+            <div class="floating-currency currency-aed">
+                د
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STATS ================= -->
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">₨</div>
+
+            <div>
+                <span>Wallet Balance</span>
+
+                <strong id="balanceValue">
+                    ₨{{ "{:,.2f}".format(wallet.balance) }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">↗</div>
+
+            <div>
+                <span>Completed Exchanges</span>
+
+                <strong id="completedValue">
+                    {{ wallet.completed_exchanges }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">◷</div>
+
+            <div>
+                <span>Average Delivery</span>
+
+                <strong>~2 min</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-grid">
+
+
+        <!-- ================= EXCHANGE PANEL ================= -->
+
+        <section class="exchange-panel" id="exchangeSection">
+
+            <div class="panel-header">
+
+                <div>
+                    <span class="eyebrow">
+                        QUICK EXCHANGE
+                    </span>
+
+                    <h2>
+                        Exchange Currency
+                    </h2>
+
+                    <p>
+                        Enter the amount and choose how you want to receive it.
+                    </p>
+                </div>
+
+                <div class="panel-status">
+                    LIVE RATE
+                </div>
+
+            </div>
+
+
+            <!-- Amount Section -->
+
+            <div class="exchange-boxes">
+
+                <div class="amount-box">
+
+                    <div class="amount-top">
+
+                        <span>You Send</span>
+
+                        <div class="currency-tag">
+                            PKR
+                        </div>
+
+                    </div>
+
+                    <div class="amount-input-row">
+
+                        <span class="currency-symbol">
+                            ₨
+                        </span>
+
+                        <input
+                            type="number"
+                            id="sendAmount"
+                            value="5000"
+                            min="1"
+                            step="0.01"
+                            inputmode="decimal"
+                            placeholder="0.00"
+                        >
+
+                    </div>
+
+                    <small>
+                        Available:
+                        ₨{{ "{:,.2f}".format(wallet.balance) }}
+                    </small>
+
+                </div>
+
+
+                <div class="exchange-arrow">
+                    ↓
+                </div>
+
+
+                <div class="amount-box receive-box">
+
+                    <div class="amount-top">
+
+                        <span>You Receive</span>
+
+                        <div
+                            class="currency-tag"
+                            id="receiveCurrency"
+                        >
+                            INR
+                        </div>
+
+                    </div>
+
+                    <div class="amount-input-row">
+
+                        <span
+                            class="currency-symbol"
+                            id="receiveSymbol"
+                        >
+                            ₹
+                        </span>
+
+                        <input
+                            type="text"
+                            id="receiveAmount"
+                            value="1562.50"
+                            readonly
+                        >
+
+                    </div>
+
+                    <small>
+                        Estimated receiving amount
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- Rate -->
+
+            <div class="rate-row">
+
+                <span>
+                    Exchange Rate
+                </span>
+
+                <strong id="exchangeRate">
+                    1 PKR = 0.3125 INR
+                </strong>
+
+            </div>
+
+
+            <!-- ================= METHODS ================= -->
+
+            <div class="method-section">
+
+                <div class="section-title">
+                    <span>Receive Method</span>
+                    <small>Select one</small>
+                </div>
+
+
+                <div class="method-grid">
+
+
+                    <button
+                        type="button"
+                        class="method-card"
+                        data-method="easypaisa"
+                    >
+
+                        <div class="method-logo easypaisa-logo">
+                            EP
+                        </div>
+
+                        <div>
+                            <strong>EasyPaisa</strong>
+                            <span>PKR Wallet</span>
+                        </div>
+
+                        <div class="method-check">
+                            ✓
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="method-card"
+                        data-method="jazzcash"
+                    >
+
+                        <div class="method-logo jazzcash-logo">
+                            JC
+                        </div>
+
+                        <div>
+                            <strong>JazzCash</strong>
+                            <span>PKR Wallet</span>
+                        </div>
+
+                        <div class="method-check">
+                            ✓
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="method-card selected"
+                        data-method="upi"
+                    >
+
+                        <div class="method-logo upi-logo">
+                            U
+                        </div>
+
+                        <div>
+                            <strong>UPI</strong>
+                            <span>INR Payment</span>
+                        </div>
+
+                        <div class="method-check">
+                            ✓
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="method-card"
+                        data-method="usdt"
+                    >
+
+                        <div class="method-logo usdt-logo">
+                            ₮
+                        </div>
+
+                        <div>
+                            <strong>USDT</strong>
+                            <span>Crypto Wallet</span>
+                        </div>
+
+                        <div class="method-check">
+                            ✓
+                        </div>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Receiver -->
+
+            <div class="receiver-section">
+
+                <div class="section-title">
+
+                    <span id="receiverLabel">
+                        UPI ID
+                    </span>
+
+                    <small>
+                        Required
+                    </small>
+
+                </div>
+
+                <div class="receiver-input">
+
+                    <span class="input-icon">
+                        ◎
+                    </span>
+
+                    <input
+                        type="text"
+                        id="receiverDetails"
+                        placeholder="name@upi"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Continue -->
+
+            <button
+                type="button"
+                class="primary-button"
+                id="continueExchange"
+            >
+
+                <span>
+                    Continue Exchange
+                </span>
+
+                <strong>→</strong>
+
+            </button>
+
+
+            <div class="demo-note">
+                <span>ⓘ</span>
+                This is a demonstration interface. No real payment is processed.
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="sidebar">
+
+
+            <!-- Wallet -->
+
+            <div class="wallet-card" id="walletSection">
+
+                <div class="wallet-glow"></div>
+
+                <div class="wallet-top">
+
+                    <span>
+                        YOUR WALLET
+                    </span>
+
+                    <span class="wallet-chip">
+                        DEMO
+                    </span>
+
+                </div>
+
+                <div class="wallet-balance">
+
+                    <small>
+                        Available Balance
+                    </small>
+
+                    <strong id="sidebarBalance">
+                        ₨{{ "{:,.2f}".format(wallet.balance) }}
+                    </strong>
+
+                </div>
+
+                <div class="wallet-actions">
+
+                    <button
+                        type="button"
+                        data-modal="deposit"
+                    >
+                        + Deposit
+                    </button>
+
+                    <button
+                        type="button"
+                        data-modal="withdraw"
+                    >
+                        − Withdraw
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- How it works -->
+
+            <div class="side-card">
+
+                <div class="side-card-title">
+                    How it works
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+                    <div>
+                        <strong>Choose amount</strong>
+                        <span>Enter what you want to send.</span>
+                    </div>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+                    <div>
+                        <strong>Select method</strong>
+                        <span>Choose your receiving option.</span>
+                    </div>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+                    <div>
+                        <strong>Track order</strong>
+                        <span>Follow the exchange status.</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Payment Methods -->
+
+            <div class="side-card">
+
+                <div class="side-card-heading">
+
+                    <div>
+                        <strong>Payment Methods</strong>
+                        <span>Available options</span>
+                    </div>
+
+                    <div class="live-label">
+                        LIVE
+                    </div>
+
+                </div>
+
+
+                <div class="available-method">
+
+                    <div class="available-icon easypaisa-logo">
+                        EP
+                    </div>
+
+                    <span>EasyPaisa</span>
+
+                    <i></i>
+
+                </div>
+
+
+                <div class="available-method">
+
+                    <div class="available-icon jazzcash-logo">
+                        JC
+                    </div>
+
+                    <span>JazzCash</span>
+
+                    <i></i>
+
+                </div>
+
+
+                <div class="available-method">
+
+                    <div class="available-icon upi-logo">
+                        U
+                    </div>
+
+                    <span>UPI</span>
+
+                    <i></i>
+
+                </div>
+
+
+                <div class="available-method">
+
+                    <div class="available-icon usdt-logo">
+                        ₮
+                    </div>
+
+                    <span>USDT</span>
+
+                    <i></i>
+
+                </div>
+
+            </div>
+
+
+            <!-- Support -->
+
+            <div class="support-card">
+
+                <div class="support-icon">
+                    ?
+                </div>
+
+                <div>
+                    <strong>Need help?</strong>
+
+                    <span>
+                        Contact support for assistance.
+                    </span>
+                </div>
+
+                <button
+                    type="button"
+                    id="supportButton"
+                >
+                    →
+                </button>
+
+            </div>
+
+        </aside>
+
+    </main>
+
+
+    <!-- ================= RECENT ACTIVITY ================= -->
+
+    <section class="activity-section" id="ordersSection">
+
+        <div class="activity-header">
+
+            <div>
+                <span class="eyebrow">
+                    ACTIVITY
+                </span>
+
+                <h2>
+                    Recent Transactions
+                </h2>
+            </div>
+
+            <button
+                type="button"
+                id="refreshTransactions"
+            >
+                Refresh ↻
+            </button>
+
+        </div>
+
+
+        <div
+            class="transactions"
+            id="transactionsList"
+        >
+
+            {% for transaction in transactions[:5] %}
+
+            <div class="transaction">
+
+                <div class="transaction-icon">
+
+                    {% if transaction.type == "deposit" %}
+                        +
+                    {% elif transaction.type == "withdraw" %}
+                        −
+                    {% else %}
+                        ↗
+                    {% endif %}
+
+                </div>
+
+                <div class="transaction-info">
+
+                    <strong>
+                        {{ transaction.title }}
+                    </strong>
+
+                    <span>
+                        {{ transaction.id }} · {{ transaction.time }}
+                    </span>
+
+                </div>
+
+                <div class="transaction-amount">
+
+                    <strong>
+                        ₨{{ "{:,.2f}".format(transaction.amount) }}
+                    </strong>
+
+                    <span class="status completed">
+                        {{ transaction.status }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ORDER MODAL ================= -->
+
+    <div
+        class="modal-overlay"
+        id="orderModal"
+    >
+
+        <div class="modal">
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeOrderModal"
+            >
+                ×
+            </button>
+
+            <div class="modal-icon success">
+                ✓
+            </div>
+
+            <span class="eyebrow">
+                EXCHANGE CREATED
+            </span>
+
+            <h2>
+                Your order is ready
+            </h2>
+
+            <p>
+                Track the progress of your exchange below.
+            </p>
+
+
+            <div class="order-id-box">
+
+                <span>Order ID</span>
+
+                <strong id="orderId">
+                    UPX-000000
+                </strong>
+
+            </div>
+
+
+            <div class="order-summary">
+
+                <div>
+                    <span>You Send</span>
+                    <strong id="modalSendAmount">₨0</strong>
+                </div>
+
+                <div>
+                    <span>You Receive</span>
+                    <strong id="modalReceiveAmount">₹0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="order-progress">
+
+                <div
+                    class="progress-step active"
+                    id="progressCreated"
+                >
+
+                    <div>
+                        ✓
+                    </div>
+
+                    <span>
+                        Created
+                    </span>
+
+                </div>
+
+
+                <div class="progress-line"></div>
+
+
+                <div
+                    class="progress-step"
+                    id="progressPayment"
+                >
+
+                    <div>
+                        2
+                    </div>
+
+                    <span>
+                        Payment
+                    </span>
+
+                </div>
+
+
+                <div class="progress-line"></div>
+
+
+                <div
+                    class="progress-step"
+                    id="progressComplete"
+                >
+
+                    <div>
+                        3
+                    </div>
+
+                    <span>
+                        Complete
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="primary-button"
+                id="trackOrder"
+            >
+                Track Order →
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= MONEY MODAL ================= -->
+
+    <div
+        class="modal-overlay"
+        id="moneyModal"
+    >
+
+        <div class="modal">
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeMoneyModal"
+            >
+                ×
+            </button>
+
+            <div class="modal-icon">
+                ₨
+            </div>
+
+            <span class="eyebrow">
+                WALLET
+            </span>
+
+            <h2 id="moneyTitle">
+                Deposit Money
+            </h2>
+
+            <p>
+                Enter an amount for this demo transaction.
+            </p>
+
+
+            <div class="money-input">
+
+                <span>
+                    ₨
+                </span>
+
+                <input
+                    type="number"
+                    id="moneyAmount"
+                    min="1"
+                    step="0.01"
+                    placeholder="0.00"
+                >
+
+            </div>
+
+
+            <button
+                type="button"
+                class="primary-button"
+                id="moneyAction"
+            >
+                Continue
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div>
+            <strong>UPI-Pay</strong>
+            <span>Quick Exchange Platform</span>
+        </div>
+
+        <div>
+            Demo environment · No real payments processed
+        </div>
+
+    </footer>
+
+</div>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>
+```
